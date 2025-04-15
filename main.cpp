@@ -52,9 +52,8 @@ int main() {
                 cout << "Masukkan simbol unsur (misal H, O, Na): ";
                 cin >> simbol;
                 tambahUnsur(inputUnsur, simbol);
-                break;
-            }
-
+                break;}
+            
             case 3:
                 tampilkanUnsur(inputUnsur);
                 break;
