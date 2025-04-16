@@ -7,7 +7,7 @@ using namespace std;
 
 // Struct untuk unsur kimia
 struct Element {
-    int nomorAtom;
+    int Nomor;
     string simbol;
     string nama;
 };
