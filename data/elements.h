@@ -1,11 +1,9 @@
-// elements.h
 #ifndef ELEMENTS_H
 #define ELEMENTS_H
 
 #include "../include/structs.h"
 using namespace std;
 
-// Daftar unsur kimia
 Element elements[] = {
     {1, "H", "Hidrogen"},
     {2, "O", "Oksigen"},
@@ -20,5 +18,12 @@ Element elements[] = {
 };
 
 const int totalElements = sizeof(elements) / sizeof(elements[0]);
+
+bool validElementSimbol(const string& simbol) {
+    for (int i = 0; i < totalElements; ++i) {
+        if (elements[i].simbol == simbol) return true;
+    }
+    return false;
+}
 
 #endif

@@ -1,4 +1,3 @@
-// reaction_engine.h
 #ifndef REACTION_ENGINE_H
 #define REACTION_ENGINE_H
 
@@ -7,6 +6,6 @@
 #include "../include/structs.h"
 using namespace std;
 
-string cekReaksi(vector<string> inputUnsur);
+string cekReaksi(vector<string> inputUnsur, string& deskripsi);
 
 #endif

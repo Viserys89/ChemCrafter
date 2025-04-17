@@ -1,3 +1,4 @@
+// ==== FILE: main.cpp ====
 #include <iostream>
 #include <vector>
 #include <string>
@@ -5,6 +6,7 @@
 #include "include/experiment_list.h"
 #include "include/history_list.h"
 #include "include/reaction_engine.h"
+#include "include/csv_writer.h"
 #include "data/elements.h"
 
 using namespace std;
@@ -51,19 +53,26 @@ int main() {
                 string simbol;
                 cout << "Masukkan simbol unsur (misal H, O, Na): ";
                 cin >> simbol;
-                tambahUnsur(inputUnsur, simbol);
-                break;}
-            
+                if (validElementSimbol(simbol)) {
+                    tambahUnsur(inputUnsur, simbol);
+                } else {
+                    cout << "[PERINGATAN] Unsur tidak ditemukan dalam tabel periodik!\n";
+                }
+                break;
+            }
+
             case 3:
                 tampilkanUnsur(inputUnsur);
                 break;
 
             case 4: {
                 vector<string> unsur = konversiKeVector(inputUnsur);
-                string hasil = cekReaksi(unsur);
+                string deskripsi;
+                string hasil = cekReaksi(unsur, deskripsi);
                 cout << "\nHasil Reaksi: " << hasil << endl;
+                if (!deskripsi.empty()) cout << "Deskripsi: " << deskripsi << endl;
                 tambahRiwayat(headRiwayat, tailRiwayat, hasil);
-                hapusSemuaUnsur(inputUnsur); // reset input setelah reaksi
+                hapusSemuaUnsur(inputUnsur);
                 break;
             }
 
@@ -82,6 +91,8 @@ int main() {
                 break;
 
             case 0:
+                cout << "Menyimpan riwayat ke riwayat.csv...\n";
+                simpanRiwayatKeCSV(headRiwayat, "riwayat.csv");
                 cout << "Terima kasih telah menggunakan program ini!\n";
                 break;
 
@@ -90,7 +101,6 @@ int main() {
         }
     } while (pilihan != 0);
 
-    // Bersihkan memori
     hapusSemuaUnsur(inputUnsur);
     hapusRiwayat(headRiwayat, tailRiwayat);
 
