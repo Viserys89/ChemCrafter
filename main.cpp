@@ -38,7 +38,7 @@ void tampilkanMenu() {
     cout << "Pilih menu: ";
 }
 void clearScreen();
-string toUpperCase(std::string input) {
+string toUpperCase(input) {
     for (char &c : input) {
         c = toupper(c);
     }
