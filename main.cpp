@@ -1,3 +1,4 @@
+// ==== FILE: main.cpp ====
 #include <iostream>
 #include <vector>
 #include <string>
@@ -5,13 +6,18 @@
 #include "include/experiment_list.h"
 #include "include/history_list.h"
 #include "include/reaction_engine.h"
-#include "data/elements.h"
+#include "include/csv_writer.h"
+#include "include/data_loader.h"
+#include "src/display.cpp"
+#include <cctype>
 
 using namespace std;
 
+vector<Element> elements;
+vector<Compound> compounds;
 void tampilkanTabelPeriodik() {
     cout << "\n--- TABEL PERIODIK SEDERHANA ---\n";
-    for (int i = 0; i < totalElements; ++i) {
+    for (size_t i = 0; i < elements.size(); ++i) {
         cout << elements[i].simbol << " (" << elements[i].nama << ")\t";
         if ((i + 1) % 5 == 0) cout << endl;
     }
@@ -27,11 +33,23 @@ void tampilkanMenu() {
     cout << "5. Lihat Riwayat Eksperimen\n";
     cout << "6. Reset Unsur\n";
     cout << "7. Reset Riwayat\n";
+    cout << "8. Bersihkan Layar\n";
     cout << "0. Keluar\n";
     cout << "Pilih menu: ";
 }
+void clearScreen();
+string toUpperCase(std::string input) {
+    for (char &c : input) {
+        c = toupper(c);
+    }
+    return input;
+}
+
 
 int main() {
+    elements = loadElementsFromCSV("elements.csv");
+    compounds = loadCompoundsFromCSV("compounds.csv");
+
     ExperimentNode* inputUnsur = nullptr;
     HistoryNode* headRiwayat = nullptr;
     HistoryNode* tailRiwayat = nullptr;
@@ -51,19 +69,27 @@ int main() {
                 string simbol;
                 cout << "Masukkan simbol unsur (misal H, O, Na): ";
                 cin >> simbol;
-                tambahUnsur(inputUnsur, simbol);
-                break;}
-            
+                simbol = toUpperCase(simbol);
+                if (validElementSimbol(simbol)) {
+                    tambahUnsur(inputUnsur, simbol);
+                } else {
+                    cout << "[PERINGATAN] Unsur tidak ditemukan dalam tabel periodik!\n";
+                }
+                break;
+            }
+
             case 3:
                 tampilkanUnsur(inputUnsur);
                 break;
 
             case 4: {
                 vector<string> unsur = konversiKeVector(inputUnsur);
-                string hasil = cekReaksi(unsur);
+                string deskripsi;
+                string hasil = cekReaksi(unsur, deskripsi);
                 cout << "\nHasil Reaksi: " << hasil << endl;
+                if (!deskripsi.empty()) cout << "Deskripsi: " << deskripsi << endl;
                 tambahRiwayat(headRiwayat, tailRiwayat, hasil);
-                hapusSemuaUnsur(inputUnsur); // reset input setelah reaksi
+                hapusSemuaUnsur(inputUnsur);
                 break;
             }
 
@@ -81,7 +107,13 @@ int main() {
                 cout << "Riwayat telah dihapus.\n";
                 break;
 
+            case 8:
+                clearScreen();
+                break;
+
             case 0:
+                cout << "Menyimpan riwayat ke riwayat.csv...\n";
+                simpanRiwayatKeCSV(headRiwayat, "riwayat.csv");
                 cout << "Terima kasih telah menggunakan program ini!\n";
                 break;
 
@@ -90,7 +122,6 @@ int main() {
         }
     } while (pilihan != 0);
 
-    // Bersihkan memori
     hapusSemuaUnsur(inputUnsur);
     hapusRiwayat(headRiwayat, tailRiwayat);
 

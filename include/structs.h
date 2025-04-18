@@ -5,26 +5,23 @@
 #include <vector>
 using namespace std;
 
-// Struct untuk unsur kimia
 struct Element {
-    int Nomor;
+    int id;
     string simbol;
     string nama;
 };
 
-// Struct untuk senyawa hasil gabungan unsur
 struct Compound {
-    string namaSenyawa;
-    vector<string> kombinasiUnsur; // misalnya {"H", "H", "O"}
+    string nama;
+    vector<string> komposisi;
+    string deskripsi;
 };
 
-// Node untuk single linked list (bahan eksperimen user)
 struct ExperimentNode {
     string simbolUnsur;
     ExperimentNode* next;
 };
 
-// Node untuk double linked list (riwayat eksperimen)
 struct HistoryNode {
     string hasil;
     HistoryNode* prev;
