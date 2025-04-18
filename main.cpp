@@ -7,13 +7,17 @@
 #include "include/history_list.h"
 #include "include/reaction_engine.h"
 #include "include/csv_writer.h"
-#include "data/elements.h"
+#include "include/data_loader.h"
+#include "src/display.cpp"
+#include <cctype>
 
 using namespace std;
 
+vector<Element> elements;
+vector<Compound> compounds;
 void tampilkanTabelPeriodik() {
     cout << "\n--- TABEL PERIODIK SEDERHANA ---\n";
-    for (int i = 0; i < totalElements; ++i) {
+    for (size_t i = 0; i < elements.size(); ++i) {
         cout << elements[i].simbol << " (" << elements[i].nama << ")\t";
         if ((i + 1) % 5 == 0) cout << endl;
     }
@@ -29,11 +33,23 @@ void tampilkanMenu() {
     cout << "5. Lihat Riwayat Eksperimen\n";
     cout << "6. Reset Unsur\n";
     cout << "7. Reset Riwayat\n";
+    cout << "8. Bersihkan Layar\n";
     cout << "0. Keluar\n";
     cout << "Pilih menu: ";
 }
+void clearScreen();
+string toUpperCase(std::string input) {
+    for (char &c : input) {
+        c = toupper(c);
+    }
+    return input;
+}
+
 
 int main() {
+    elements = loadElementsFromCSV("elements.csv");
+    compounds = loadCompoundsFromCSV("compounds.csv");
+
     ExperimentNode* inputUnsur = nullptr;
     HistoryNode* headRiwayat = nullptr;
     HistoryNode* tailRiwayat = nullptr;
@@ -53,6 +69,7 @@ int main() {
                 string simbol;
                 cout << "Masukkan simbol unsur (misal H, O, Na): ";
                 cin >> simbol;
+                simbol = toUpperCase(simbol);
                 if (validElementSimbol(simbol)) {
                     tambahUnsur(inputUnsur, simbol);
                 } else {
@@ -88,6 +105,10 @@ int main() {
             case 7:
                 hapusRiwayat(headRiwayat, tailRiwayat);
                 cout << "Riwayat telah dihapus.\n";
+                break;
+
+            case 8:
+                clearScreen();
                 break;
 
             case 0:

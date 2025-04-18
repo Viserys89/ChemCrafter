@@ -6,14 +6,14 @@
 using namespace std;
 
 struct Element {
-    int nomorAtom;
+    int id;
     string simbol;
     string nama;
 };
 
 struct Compound {
-    string namaSenyawa;
-    vector<string> kombinasiUnsur;
+    string nama;
+    vector<string> komposisi;
     string deskripsi;
 };
 

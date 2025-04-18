@@ -1,11 +1,12 @@
 #ifndef REACTION_ENGINE_H
 #define REACTION_ENGINE_H
 
-#include <string>
 #include <vector>
-#include "../include/structs.h"
+#include <string>
+#include "structs.h"
 using namespace std;
 
-string cekReaksi(vector<string> inputUnsur, string& deskripsi);
+bool validElementSimbol(const string& simbol);
+string cekReaksi(const vector<string>& unsur, string& deskripsi);
 
 #endif
