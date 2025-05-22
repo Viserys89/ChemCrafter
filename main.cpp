@@ -9,6 +9,8 @@
 #include "include/csv_writer.h"
 #include "include/data_loader.h"
 #include "src/display.cpp"
+#include "include/compound_dictionary.h"
+#include "include/challenge_mode.h"
 #include <cctype>
 
 using namespace std;
@@ -34,11 +36,13 @@ void tampilkanMenu() {
     cout << "6. Reset Unsur\n";
     cout << "7. Reset Riwayat\n";
     cout << "8. Bersihkan Layar\n";
+    cout << "9. Kamus Senyawa\n";
+    cout << "10. Mode Challenge\n";
     cout << "0. Keluar\n";
     cout << "Pilih menu: ";
 }
 void clearScreen();
-string toUpperCase(input) {
+string toUpperCase(string input) {
     for (char &c : input) {
         c = toupper(c);
     }
@@ -110,7 +114,14 @@ int main() {
             case 8:
                 clearScreen();
                 break;
-
+            case 9:{
+                auto dict = CompoundDictionary::load("compounds_dictionary.csv");
+                CompoundDictionary::displayAll(dict);
+                break;
+            }
+            case 10:
+            runChallengeMode();
+            break;
             case 0:
                 cout << "Menyimpan riwayat ke riwayat.csv...\n";
                 simpanRiwayatKeCSV(headRiwayat, "riwayat.csv");
