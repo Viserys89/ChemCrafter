@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "riwayat_tree.h"
 using namespace std;
 
 struct Element {
