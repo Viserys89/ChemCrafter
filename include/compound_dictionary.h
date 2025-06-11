@@ -1,3 +1,4 @@
+// compound_dictionary.h
 #ifndef COMPOUND_DICTIONARY_H
 #define COMPOUND_DICTIONARY_H
 

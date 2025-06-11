@@ -54,6 +54,7 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "iomanip": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "map": "cpp"
     }
 }

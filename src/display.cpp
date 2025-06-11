@@ -1,4 +1,6 @@
+// display.cpp
 #include <cstdlib>
+using namespace std;
 
 void clearScreen() {
 #ifdef _WIN32

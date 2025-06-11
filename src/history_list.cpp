@@ -20,7 +20,6 @@ void tampilkanRiwayat(HistoryNode* head) {
         cout << "(Belum ada riwayat)\n";
         return;
     }
-
     int i = 1;
     while (head) {
         cout << i++ << ". " << head->hasil << endl;

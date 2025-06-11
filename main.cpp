@@ -1,13 +1,10 @@
-// ==== FILE: main.cpp ====
-
+// main.cpp
 #include <iostream>
 #include <vector>
 #include <string>
 #include <cctype>
 #include <functional>
 #include <algorithm>
-
-// Header-header lama yang sudah ada
 #include "include/structs.h"
 #include "include/experiment_list.h"
 #include "include/history_list.h"
@@ -17,8 +14,6 @@
 #include "include/compound_dictionary.h"
 #include "include/challenge_mode.h"
 #include "src/display.cpp"
-
-// Header baru untuk Riwayat Tree
 #include "include/riwayat_tree.h"
 
 using namespace std;
@@ -26,21 +21,11 @@ using namespace std;
 // Variabel global untuk menyimpan tabel periodik dan daftar senyawa dari CSV
 vector<Element> elements;
 vector<Compound> compounds;
-
 // Daftar Compound yang sudah user hasilkan (baik lewat reaksi maupun gabungan)
 vector<Compound> userCompounds;
 // Daftar pointer ke akar-akar pohon riwayat (Tree)
 vector<RiwayatNode*> roots;
 
-/**
- * Fungsi pembantu untuk mencari RiwayatNode* berdasar nama formulanya.
- * Digunakan saat user memilih 2 senyawa yang ingin digabung.
- *
- * @param rootList Daftar ‘akar’ (roots) pohon— ada kemungkinan lebih dari satu akar
- * @param target   Nama senyawa (formula) yang dicari, misal "CO2" atau "H2O".
- * @return Pointer ke RiwayatNode yang memiliki node->hasil == target.
- *         Jika tidak ketemu, kembalikan nullptr.
- */
 RiwayatNode* cariNodeByFormula(const vector<RiwayatNode*>& rootList, const string& target) {
     for (RiwayatNode* root : rootList) {
         if (root == nullptr) continue;
@@ -59,7 +44,7 @@ RiwayatNode* cariNodeByFormula(const vector<RiwayatNode*>& rootList, const strin
     return nullptr;
 }
 
-// Menampilkan menu utama lama + opsi tree
+
 void tampilkanMenu() {
     cout << "\n=== PROGRAM LAB KIMIA VIRTUAL ===\n";
     cout << "1. Tampilkan Tabel Periodik\n";
@@ -110,12 +95,9 @@ int main() {
         cin.ignore();
 
         switch (pilihan) {
-            // 1) Tampilkan Tabel Periodik
             case 1:
                 tampilkanTabelPeriodik();
                 break;
-
-            // 2) Tambahkan Unsur ke Eksperimen
             case 2: {
                 string simbol;
                 cout << "Masukkan simbol unsur (misal H, O, Na): ";
@@ -128,13 +110,9 @@ int main() {
                 }
                 break;
             }
-
-            // 3) Lihat Unsur yang Sudah Dimasukkan
             case 3:
                 tampilkanUnsur(inputUnsur);
                 break;
-
-            // 4) Jalankan Reaksi
             case 4: {
                 // Konversi linked list inputUnsur ke vector<string>
                 vector<string> unsur = konversiKeVector(inputUnsur);
@@ -148,7 +126,6 @@ int main() {
                 if (!deskripsi.empty()) cout << "Deskripsi: " << deskripsi << endl;
                 tambahRiwayat(headRiwayat, tailRiwayat, namaHasil);
                 hapusSemuaUnsur(inputUnsur);
-
                 // Tambahkan ke userCompounds & Tree jika senyawa diketahui
                 if (namaHasil != "Tidak diketahui") {
                     // Cari Compound di daftar compounds (dari CSV)
@@ -173,43 +150,29 @@ int main() {
                 }
                 break;
             }
-
-            // 5) Lihat Riwayat Eksperimen (Linier)
             case 5:
                 cout << "\n--- Riwayat Eksperimen (Linier) ---\n";
                 tampilkanRiwayat(headRiwayat);
                 break;
-
-            // 6) Reset Unsur
             case 6:
                 hapusSemuaUnsur(inputUnsur);
                 cout << "[INFO] Input unsur telah di-reset.\n";
                 break;
-
-            // 7) Reset Riwayat (Linier)
             case 7:
                 hapusRiwayat(headRiwayat, tailRiwayat);
                 cout << "[INFO] Riwayat linier telah dihapus.\n";
                 break;
-
-            // 8) Bersihkan Layar
             case 8:
                 clearScreen();
                 break;
-
-            // 9) Kamus Senyawa
             case 9: {
                 auto dict = CompoundDictionary::load("compounds_dictionary.csv");
                 CompoundDictionary::displayAll(dict);
                 break;
             }
-
-            // 10) Mode Challenge
             case 10:
                 runChallengeMode();
                 break;
-
-            // 11) Gabungkan Dua Senyawa (Tree)
             case 11: {
                 if (userCompounds.size() < 2) {
                     cout << "[PERINGATAN] Belum cukup senyawa untuk digabung (minimal 2 senyawa).\n";
@@ -276,8 +239,6 @@ int main() {
                 cout << "[INFO] Senyawa \"" << gabungan.nama << "\" ditambahkan ke Riwayat Tree.\n";
                 break;
             }
-
-            // 12) Tampilkan Riwayat Pohon Eksperimen
             case 12:
                 if (roots.empty()) {
                     cout << "[INFO] Belum ada riwayat eksperimen di Tree.\n";
@@ -289,8 +250,6 @@ int main() {
                     }
                 }
                 break;
-
-            // 0) Keluar
             case 0:
                 cout << "\nMenyimpan riwayat ke riwayat.csv...\n";
                 simpanRiwayatKeCSV(headRiwayat, "riwayat.csv");
